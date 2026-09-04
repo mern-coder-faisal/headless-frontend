@@ -16,12 +16,12 @@ const PortfolioLanding = ({ onSelectProject }) => {
   const [submitting, setSubmitting] = useState(false);
   const [formSuccess, setFormSuccess] = useState('');
 
-  // Domain & Credentials Setup
-  const BASE_URL = 'https://api.weballly.com';
-  const username = 'faisal'; 
-  const appPassword = 'YOUR_WP_APP_PASSWORD'; // Hostinger WordPress থেকে জেনারেট করা অ্যাপ পাসওয়ার্ডটি এখানে দিন
+  // Environment Variables
+  const BASE_URL = import.meta.env.VITE_WP_BASE_URL;
+  const username = import.meta.env.VITE_WP_USERNAME;
+  const appPassword = import.meta.env.VITE_WP_APP_PASSWORD;
 
-  // Basic Auth Credentials
+  // Encode Basic Auth Token
   const credentials = btoa(`${username}:${appPassword}`);
 
   // 1. Fetch Projects List
@@ -136,7 +136,7 @@ const PortfolioLanding = ({ onSelectProject }) => {
       setSubmitting(false);
       setFormSuccess('Project published successfully!');
       
-      // Reset Form
+      // Reset Inputs
       setTitle(''); 
       setContent(''); 
       setLiveDemo(''); 
@@ -224,7 +224,7 @@ const PortfolioLanding = ({ onSelectProject }) => {
       <section className="bg-white py-12 border-t border-gray-200">
         <div className="max-w-lg mx-auto px-4">
           <h2 className="text-xl font-bold text-gray-900 mb-1">Add New Project</h2>
-          <p className="text-xs text-gray-500 mb-6">Publish directly to api.weballly.com</p>
+          <p className="text-xs text-gray-500 mb-6">Publish directly using API</p>
 
           {formSuccess && (
             <div className="bg-emerald-50 text-emerald-700 p-3 rounded-lg text-xs font-medium mb-4 border border-emerald-200">
