@@ -16,25 +16,25 @@ const PortfolioLanding = ({ onSelectProject }) => {
   const [submitting, setSubmitting] = useState(false);
   const [formSuccess, setFormSuccess] = useState('');
 
-  // Domain & Direct Credentials Setup
+  // Domain & Credentials Setup
   const BASE_URL = 'https://api.weballly.com';
   const username = 'faisal'; 
-  const appPassword = 'gHNmt1nttxLFskDQg62JK4dL'; // Clean password without spaces
+  const appPassword = 'YOUR_WP_APP_PASSWORD'; // Hostinger WordPress থেকে জেনারেট করা অ্যাপ পাসওয়ার্ডটি এখানে দিন
 
-  // Encode Basic Auth Token
+  // Basic Auth Credentials
   const credentials = btoa(`${username}:${appPassword}`);
 
-  // 1. Fetch Projects List (With Cache Busting)
+  // 1. Fetch Projects List
   const fetchProjects = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      // Cache-busting URL parameter to avoid getting old cached responses
       const res = await fetch(`${BASE_URL}/wp-json/wp/v2/projects?_embed&_t=${Date.now()}`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
+          'Authorization': `Basic ${credentials}`,
         },
       });
 
@@ -63,7 +63,7 @@ const PortfolioLanding = ({ onSelectProject }) => {
     setFormSuccess('');
 
     try {
-      // Step A: Upload Featured Image (if selected)
+      // Step A: Upload Featured Image
       let featuredMediaId = null;
       if (imageFile) {
         const formData = new FormData();
@@ -117,7 +117,7 @@ const PortfolioLanding = ({ onSelectProject }) => {
 
       const newPost = await postRes.json();
 
-      // Step C: Fallback ACF Update to guarantee ACF fields are saved
+      // Step C: Fallback ACF Update
       await fetch(`${BASE_URL}/wp-json/acf/v3/projects/${newPost.id}`, {
         method: 'POST',
         headers: {
@@ -136,7 +136,7 @@ const PortfolioLanding = ({ onSelectProject }) => {
       setSubmitting(false);
       setFormSuccess('Project published successfully!');
       
-      // Reset Form Inputs
+      // Reset Form
       setTitle(''); 
       setContent(''); 
       setLiveDemo(''); 
@@ -144,7 +144,6 @@ const PortfolioLanding = ({ onSelectProject }) => {
       setTechnologies(''); 
       setImageFile(null);
       
-      // Sync list with a brief delay for database indexing
       setTimeout(() => {
         fetchProjects();
       }, 1000);
@@ -225,7 +224,7 @@ const PortfolioLanding = ({ onSelectProject }) => {
       <section className="bg-white py-12 border-t border-gray-200">
         <div className="max-w-lg mx-auto px-4">
           <h2 className="text-xl font-bold text-gray-900 mb-1">Add New Project</h2>
-          <p className="text-xs text-gray-500 mb-6">Publish directly to faisal.weballly.com</p>
+          <p className="text-xs text-gray-500 mb-6">Publish directly to api.weballly.com</p>
 
           {formSuccess && (
             <div className="bg-emerald-50 text-emerald-700 p-3 rounded-lg text-xs font-medium mb-4 border border-emerald-200">
