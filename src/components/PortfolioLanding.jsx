@@ -17,7 +17,7 @@ const PortfolioLanding = ({ onSelectProject }) => {
   const [formSuccess, setFormSuccess] = useState('');
 
   // Domain & Direct Credentials Setup
-  const BASE_URL = 'https://faisal.weballly.com';
+  const BASE_URL = 'https://api.weballly.com';
   const username = 'faisal'; 
   const appPassword = 'gHNmt1nttxLFskDQg62JK4dL'; // Clean password without spaces
 
